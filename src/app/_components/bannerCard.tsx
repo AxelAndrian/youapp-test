@@ -3,9 +3,12 @@
 import React from "react";
 import Card from "@/_components/ui/card";
 import { cn } from "@/_utils/cn";
-import { TProfile } from "../_entities/profile.schema";
+import { TProfile } from "../_entities/profile";
+import Badge from "@/_components/ui/badge";
 
 import ProfileImg from "@/assets/images/profile-img.jpg";
+import { calculateAge } from "@/_utils/calculate-age";
+import { getHoroscopeIcon, getZodiacIcon } from "@/_utils/zodiac_birthdate";
 
 interface IBannerCard extends React.HTMLAttributes<HTMLDivElement> {
   profile?: TProfile;
@@ -34,9 +37,35 @@ const BannerCard = React.forwardRef<HTMLDivElement, IBannerCard>(
         {...rest}
         ref={ref}
       >
-        <div className="space-y-3 mt-auto">
-          <p className="text-base font-bold">@{profile?.username}</p>
-        </div>
+        {profile?.name && (
+          <div className="absolute bottom-4 left-4 space-y-3">
+            {/* Username and Age */}
+            <div className="space-y-1">
+              <p className="text-2xl font-bold text-white">
+                @{profile?.username}, {calculateAge(profile?.birthday ?? "")}
+              </p>
+              <p className="text-xl font-medium text-white">Male</p>
+            </div>
+
+            {/* Zodiac Badges */}
+            <div className="flex gap-2">
+              {profile?.horoscope && (
+                <Badge>
+                  <span className="mr-1">
+                    {getHoroscopeIcon(profile.horoscope)}
+                  </span>
+                  {profile.horoscope}
+                </Badge>
+              )}
+              {profile?.zodiac && (
+                <Badge>
+                  <span className="mr-1">{getZodiacIcon(profile.zodiac)}</span>
+                  {profile.zodiac}
+                </Badge>
+              )}
+            </div>
+          </div>
+        )}
       </Card>
     );
   }

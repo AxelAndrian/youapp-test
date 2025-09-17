@@ -1,3 +1,5 @@
+import { TProfile } from "@/app/_entities/profile";
+
 type HoroscopeSign =
   | "Aries"
   | "Taurus"
@@ -26,12 +28,12 @@ type ChineseZodiac =
   | "Dog"
   | "Pig";
 
-interface ZodiacResult {
+export interface ZodiacResult {
   horoscope: HoroscopeSign;
   chineseZodiac: ChineseZodiac;
 }
 
-function getZodiacByBirthdate(date: Date): ZodiacResult {
+export function getZodiacByBirthdate(date: Date): ZodiacResult {
   const day = date.getDate();
   const month = date.getMonth() + 1; // JS months are 0-based
   const year = date.getFullYear();
@@ -85,3 +87,53 @@ function getZodiacByBirthdate(date: Date): ZodiacResult {
 
   return { horoscope, chineseZodiac };
 }
+
+export const computeZodiacs = (birthday: string) => {
+  if (!birthday)
+    return { horoscope: "", zodiac: "" } as Pick<
+      TProfile,
+      "horoscope" | "zodiac"
+    >;
+  const d = new Date(birthday);
+  const { horoscope, chineseZodiac } = getZodiacByBirthdate(d);
+  return { horoscope, zodiac: chineseZodiac } as Pick<
+    TProfile,
+    "horoscope" | "zodiac"
+  >;
+};
+
+export const getHoroscopeIcon = (horoscope: string) => {
+  const icons: Record<string, string> = {
+    Aries: "♈",
+    Taurus: "♉",
+    Gemini: "♊",
+    Cancer: "♋",
+    Leo: "♌",
+    Virgo: "♍",
+    Libra: "♎",
+    Scorpio: "♏",
+    Sagittarius: "♐",
+    Capricorn: "♑",
+    Aquarius: "♒",
+    Pisces: "♓",
+  };
+  return icons[horoscope] || "♈";
+};
+
+export const getZodiacIcon = (zodiac: string) => {
+  const icons: Record<string, string> = {
+    Rat: "🐭",
+    Ox: "🐂",
+    Tiger: "🐅",
+    Rabbit: "🐰",
+    Dragon: "🐲",
+    Snake: "🐍",
+    Horse: "🐴",
+    Goat: "🐐",
+    Monkey: "🐵",
+    Rooster: "🐓",
+    Dog: "🐕",
+    Pig: "🐷",
+  };
+  return icons[zodiac] || "🐭";
+};

@@ -8,13 +8,15 @@ interface IInput extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   classWrapper?: string;
   type?: HTMLInputTypeAttribute;
+  rightSlot?: React.ReactNode;
 }
 
 const Input = React.forwardRef<HTMLInputElement, IInput>(
-  ({ className, classWrapper, type = "text", ...rest }, ref) => {
+  ({ className, classWrapper, type = "text", rightSlot, ...rest }, ref) => {
     const [show, setShow] = React.useState(false);
     const isPassword = type === "password";
     const inputType = isPassword && show ? "text" : type;
+    const hasRightContent = isPassword || rightSlot;
 
     return (
       <div className={cn("relative w-full", classWrapper)}>
@@ -24,7 +26,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           className={cn(
             `w-full px-4 py-4.5 rounded-xl text-white placeholder-white/40 text-sm 
            bg-white/5 focus:outline-none`,
-            isPassword && "pr-12",
+            hasRightContent && "pr-12",
             className
           )}
           {...rest}
@@ -42,6 +44,11 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
               <Eye size={20} color="#D5BE88" />
             )}
           </button>
+        )}
+        {rightSlot && !isPassword && (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-white text-xs">
+            {rightSlot}
+          </div>
         )}
       </div>
     );

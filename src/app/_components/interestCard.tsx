@@ -3,7 +3,7 @@
 import React from "react";
 import Card from "@/_components/ui/card";
 import { cn } from "@/_utils/cn";
-import { TProfile } from "../_entities/profile.schema";
+import { TProfile } from "../_entities/profile";
 import { Pen } from "lucide-react";
 import Badge from "@/_components/ui/badge";
 import Link from "next/link";
@@ -29,14 +29,14 @@ const InterestCard = React.forwardRef<HTMLDivElement, IInterestCard>(
             <Pen size={18} />
           </Link>
         </div>
-        {(profile.interest?.length ?? 0) > 0 && (
+        {(profile.interests?.length ?? 0) > 0 && (
           <div className="inline-flex items-center gap-3">
-            {profile.interest?.map((interest, idx) => (
+            {profile.interests?.map((interest, idx) => (
               <Badge key={idx}>{interest}</Badge>
             ))}
           </div>
         )}
-        {(profile.interest?.length ?? 0) === 0 && (
+        {(profile.interests?.length ?? 0) === 0 && (
           <p className="text-sm font-medium text-white/50 pr-5">
             Add in your interest to find a better match
           </p>
